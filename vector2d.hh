@@ -7,12 +7,12 @@ namespace zlt::mymath {
   using Vector2d = Vector<2, T>;
 
   template<FloatingPoint T>
-  inline constexpr auto polarArcOf(const Vector<2, T> &a) noexcept {
+  inline constexpr auto radians(const Vector2d<T> &a) noexcept {
     return std::atan(a[1] / a[0]);
   }
 
   template<FloatingPoint T, FloatingPoint U>
-  inline constexpr auto makeFromPolar(T arc, U norm = 1) noexcept {
+  inline constexpr auto polar(T arc, U norm = 1) noexcept {
     return Vector2d<HigherPrecision<T, U>>({ norm * std::cos(arc), norm * std::sin(arc) });
   }
 

@@ -1,8 +1,7 @@
 #pragma once
 
-#define _USE_MATH_DEFINES
-
 #include<cmath>
+#include<numbers>
 #include<type_traits>
 
 namespace zlt::mymath {
@@ -27,10 +26,10 @@ namespace zlt::mymath {
   using HigherPrecision = typename HigherPrecision_<T, U>::Type;
 
   static consteval long double operator ""_degree(long double value) {
-    return value * M_PI / 180;
+    return value * std::numbers::pi_v<long double> / 180;
   }
 
   static consteval long double operator ""_pi(long double value) {
-    return value * M_PI;
+    return value * std::numbers::pi_v<long double>;
   }
 }
