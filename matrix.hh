@@ -104,14 +104,16 @@ namespace zlt::mymath {
   /// [1, 2, 3] * [1, 2] = [1 * 1 + 2 * 3 + 3 * 5, 1 * 2 + 2 * 4 + 3 * 6]
   /// [4, 5, 6]   [3, 4]   [4 * 1 + 5 * 3 + 6 * 5, 4 * 2 + 5 * 2 + 6 * 6]
   ///             [5, 6]
-  template<FloatingPoint T, size_t N, size_t P, FloatingPoint U, size_t M, FloatingPoint V, size_t ...I>
-  int mul(T *dest, const Matrix<N, P, U> &a, const Matrix<P, M, V> &b, int i, int j, std::index_sequence<I...> seq) noexcept {
+  template<size_t N, size_t M, FloatingPoint T, size_t P, FloatingPoint U, FloatingPoint V, size_t ...I>
+  int mul(
+    Matrix<N, M, T> &dest, const Matrix<N, P, U> &a, const Matrix<P, M, V> &b, int i, int j, std::index_sequence<I...> seq
+  ) noexcept {
     if (i < N) {
       if (j < M) {
-        *dest = ((a[i][I] * b[I][j]) + ...);
-        return mul(dest + 1, a, b, i, j + 1, seq);
+        dest[i][j] = ((a[i][I] * b[I][j]) + ...);
+        return mul(dest, a, b, i, j + 1, seq);
       } else {
-        return mul(dest + 1, a, b, i + 1, 0, seq);
+        return mul(dest, a, b, i + 1, 0, seq);
       }
     } else {
       return 0;
@@ -122,7 +124,7 @@ namespace zlt::mymath {
   static inline auto operator *(const Matrix<N, P, T> &a, const Matrix<P, M, U> &b) noexcept {
     using V = HigherPrecision<T, U>;
     Matrix<N, M, V> c;
-    mul((V *) c, a, b, 0, 0, std::make_index_sequence<P>());
+    mul(c, a, b, 0, 0, std::make_index_sequence<P>());
     return c;
   }
 
