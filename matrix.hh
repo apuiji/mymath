@@ -136,4 +136,18 @@ namespace zlt::mymath {
     return c;
   }
   // add/sub/mul/div end
+
+  template<size_t M, size_t N, FloatingPoint T, FloatingPoint U>
+  int transposition(Matrix<M, N, T> &dest, const Matrix<N, M, U> &src, int i, int j) noexcept {
+    if (i < N) {
+      if (j < M) {
+        dest[i][j] = src[j][i];
+        return transposition(dest, src, i, j + 1);
+      } else {
+        return transposition(dest, src, i + 1, 0);
+      }
+    } else {
+      return 0;
+    }
+  }
 }
